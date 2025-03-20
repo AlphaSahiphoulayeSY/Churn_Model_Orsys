@@ -1,4 +1,4 @@
-# Seventh test
+# Test
 import pandas as pd
 from sklearn.linear_model import LogisticRegression
 from joblib import dump

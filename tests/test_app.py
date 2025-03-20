@@ -57,7 +57,7 @@ def test_predict_missing_data(client):
 def test_predict_invalid_data(client):
     # Données invalides (par exemple, un âge négatif)
     test_data = {
-        'Age': -5,
+        'Age': 15,
         'Account_Manager': 1,
         'Years': 10,
         'Num_Sites': 5

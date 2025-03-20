@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Prédiction du Churn</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f7f7f7;
+        }
+
+        .container {
+            background-color: white;
+            padding: 30px;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            width: 300px;
+            text-align: center;
+        }
+
+        h2 {
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin: 10px 0 5px;
+        }
+
+        input[type="text"], input[type="number"] {
+            width: 100%;
+            padding: 8px;
+            margin: 5px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+        }
+
+        button {
+            background-color: #007bff;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 16px;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+
+        .result {
+            margin-top: 20px;
+            font-size: 18px;
+        }
+
+        .error {
+            color: red;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h2>Prédiction du Churn</h2>
+        <form id="prediction-form">
+            <label for="Age">Âge :</label>
+            <input type="number" id="Age" name="Age" required>
+
+            <label for="Account_Manager">Gestionnaire de compte (0 ou 1) :</label>
+            <input type="number" id="Account_Manager" name="Account_Manager" min="0" max="1" required>
+
+            <label for="Years">Années :</label>
+            <input type="number" id="Years" name="Years" required>
+
+            <label for="Num_Sites">Nombre de sites :</label>
+            <input type="number" id="Num_Sites" name="Num_Sites" required>
+
+            <button type="submit">Prédire</button>
+        </form>
+
+        <div class="result" id="result"></div>
+        <div class="error" id="error"></div>
+    </div>
+
+    <script>
+        // Ajouter un écouteur d'événements pour envoyer les données au serveur lorsque le formulaire est soumis
+        document.getElementById('prediction-form').addEventListener('submit', function (e) {
+            e.preventDefault();
+
+            // Récupérer les valeurs du formulaire
+            const formData = new FormData(this);
+            const data = {
+                'Age': formData.get('Age'),
+                'Account_Manager': formData.get('Account_Manager'),
+                'Years': formData.get('Years'),
+                'Num_Sites': formData.get('Num_Sites')
+            };
+
+            // Envoyer la requête POST au serveur
+            fetch('/predict', {
+                method: 'POST',
+                body: new URLSearchParams(data),
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Afficher la prédiction
+                if (data.churn_prediction !== undefined) {
+                    document.getElementById('result').innerText = `Prédiction de churn : ${data.churn_prediction}`;
+                    document.getElementById('error').innerText = '';
+                } else {
+                    document.getElementById('error').innerText = `Erreur : ${data.error}`;
+                    document.getElementById('result').innerText = '';
+                }
+            })
+            .catch(error => {
+                // Afficher les erreurs de la requête
+                document.getElementById('error').innerText = `Erreur : ${error.message}`;
+                document.getElementById('result').innerText = '';
+            });
+        });
+    </script>
+</body>
+</html>

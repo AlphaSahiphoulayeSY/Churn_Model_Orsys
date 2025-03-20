@@ -17,9 +17,9 @@ def test_train_model_loading(model):
     "Le modèle n'est pas une régression logistique" 
   )
 
-picklefile = "C:/Users/orsys/Downloads/data/trained_model.pkl"
-csvfile = "C:/Users/orsys/Downloads/data/customer_churn.csv"
-model = load('C:/Users/orsys/Downloads/data/trained_model.pkl')
+picklefile = "data/trained_model.pkl"
+csvfile = "data/customer_churn.csv"
+model = load('data/trained_model.pkl')
 
 check_pickle_file_exists(picklefile)
 check_input_file_exists(csvfile)

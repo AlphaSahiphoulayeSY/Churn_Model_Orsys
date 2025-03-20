@@ -49,4 +49,4 @@ jobs:
 
     - name: Deploy to Elastic Beanstalk
       run: |
-        eb deploy Alphasychurn-env
+        eb deploy alphasychurn-env
